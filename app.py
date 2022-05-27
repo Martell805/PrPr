@@ -6,11 +6,6 @@ import pycountry
 app = Flask(__name__)
 
 
-@app.route('/<string:name>', methods=['GET'])
-def index(name):
-    return {'msg': 'Hello ' + name}
-
-
 @app.route('/trending_searches/<string:region>', methods=['GET'])
 def trending_searches(region):
     country = pycountry.countries.get(alpha_2=region)
