@@ -27,8 +27,14 @@ def get_interest_over_time(region, keyword):
 
     interest_pytrends = TrendReq()
     interest_pytrends.build_payload([keyword], geo=region, timeframe='today 3-m')
-    trends_dict = interest_pytrends.interest_over_time().to_dict(orient="index")
-    trends_dict = {time.to_pydatetime().isoformat(): trends_dict[time][keyword] for time in trends_dict}
+    trends_dict = interest_pytrends.interest_over_time().to_dict(orient="split")
+    print(trends_dict)
+    trends_dict = [
+        {
+            "date": str(trends_dict["index"][q]),
+            "popularity": trends_dict["data"][q][0],
+        }
+        for q in range(len(trends_dict["index"]))]
 
     return trends_dict
 

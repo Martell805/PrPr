@@ -1,3 +1,5 @@
+# VERSION 1.1
+
 from flask import Flask
 from json import dumps
 from apis import *
