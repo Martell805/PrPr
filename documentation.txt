@@ -1,41 +1,41 @@
 /trending_searches/<region> - возвращает список самых популярных запросов в указанной стране (например RU - Россия, WR - мир)
 
 
-/interest_over_time/<region>/<keyword> - возвращает список словарей
+/interest_over_time/<region>/<keyword> - возвращает список словарей вида
 {
-    "date": <дата>,
-    "popularity": <популярность>
+    "date": <дата: string>,
+    "popularity": <популярность: int>
 }
 запроса keyword в указанной стране (например RU - Россия, WR - мир)
 
 
-/related_searches/<region>/<keyword> - возвращает список словарей
+/related_searches/<region>/<keyword> - возвращает список словарей вида
 {
-    "keyword": <запрос>,
-    "type": <тип запроса (что это одним словом)>,
-    "relation": <связанность>
+    "keyword": <запрос: string>,
+    "type": <тип запроса (что это одним словом): string>,
+    "relation": <связанность: int>
 }
 запроса keyword в указанной стране (например RU - Россия, WR - мир)
 
 
 /info/<keyword> - возвращает словарь вида
 {
-    "page_exists": <существование страницы>,
-    "short": <короткая информация о запросе>,
-    "full": <полная информация о запросе>
+    "page_exists": <существование страницы: bool>,
+    "short": <короткая информация о запросе: string>,
+    "full": <полная информация о запросе: string>
 }
 "short" и "full" есть только если "page exists" - true
 
 
 /full_info/<region>/<keyword> - возвращает словарь вида
 {
-    "page_exists": <существование страницы>,
-    "short": <короткая информация о запросе>,
-    "full": <полная информация о запросе>,
+    "page_exists": <существование страницы: bool>,
+    "short": <короткая информация о запросе: string>,
+    "full": <полная информация о запросе: string>,
     "graph": <список точек:
         {
-            "date": <дата>,
-            "popularity": <популярность>
+            "date": <дата: string>,
+            "popularity": <популярность: int>
         }>
 }
 "short" и "full" есть только если "page exists" - true
