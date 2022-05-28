@@ -1,21 +1,14 @@
 from flask import Flask
-from pytrends.request import TrendReq
 from json import dumps
-import pycountry
+from apis import *
+
 
 app = Flask(__name__)
 
 
 @app.route('/trending_searches/<string:region>', methods=['GET'])
 def trending_searches(region):
-    country = pycountry.countries.get(alpha_2=region)
-    country_name = country.name.replace(" ", "_").lower()
-    if country_name == "russian_federation":
-        country_name = "russia"
-
-    pytrends = TrendReq()
-    trends = pytrends.trending_searches(pn=country_name)
-    trends_list = trends.to_dict(orient='list')[0]
+    trends_list = get_trending_searches(region)
     trends_json = dumps(trends_list, ensure_ascii=False)
 
     return trends_json
@@ -23,13 +16,28 @@ def trending_searches(region):
 
 @app.route('/interest_over_time/<string:region>/<string:keyword>', methods=['GET'])
 def interest_over_time(region, keyword):
-    pytrends = TrendReq()
-    pytrends.build_payload([keyword], geo=region, timeframe='today 3-m')
-    trends_dict = pytrends.interest_over_time().to_dict(orient="index")
-    trends_dict = {time.to_pydatetime().isoformat(): trends_dict[time][keyword] for time in trends_dict}
-    trends_json = dumps(trends_dict, ensure_ascii=False)
+    trends_list = get_interest_over_time(region, keyword)
+    trends_json = dumps(trends_list, ensure_ascii=False)
 
     return trends_json
+
+
+@app.route('/info/<string:keyword>', methods=['GET'])
+def info(keyword):
+    page_dict = get_info(keyword)
+
+    page_json = dumps(page_dict, ensure_ascii=False)
+
+    return page_json
+
+
+@app.route('/full_info/<string:region>/<string:keyword>')
+def full_info(region, keyword):
+    full_dict = get_info(keyword)
+
+    full_dict["graph"] = get_interest_over_time(region, keyword)
+
+    return dumps(full_dict, ensure_ascii=False)
 
 
 if __name__ == '__main__':
