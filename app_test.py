@@ -10,3 +10,5 @@ if __name__ == '__main__':
     print(response.content.decode())
     response = requests.get("http://127.0.0.1:5000/full_info/WR/Netflix")
     print(response.content.decode())
+    response = requests.get("http://127.0.0.1:5000/related_searches/RU/ксго")
+    print(response.content.decode())

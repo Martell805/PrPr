@@ -3,7 +3,7 @@ import pycountry
 from wikipediaapi import Wikipedia
 
 
-wiki = Wikipedia('ru')
+wiki = Wikipedia('RU')
 pytrends = TrendReq()
 
 
@@ -37,6 +37,24 @@ def get_interest_over_time(region, keyword):
         for q in range(len(trends_dict["index"]))]
 
     return trends_dict
+
+
+def get_related_searches(region, keyword):
+    if region == "WR":
+        region = ""
+
+    related_pytrends = TrendReq()
+    related_pytrends.build_payload([keyword], geo=region, timeframe='today 3-m')
+
+    related_list = related_pytrends.related_topics()[keyword]["top"].to_dict(orient="records")
+    related_list = [
+        {
+            "keyword": info["topic_title"],
+            "type": info["topic_type"],
+            "relation": info["value"],
+        } for info in related_list]
+
+    return related_list
 
 
 def get_info(keyword):

@@ -1,4 +1,4 @@
-# VERSION 1.1
+# VERSION 1.2
 
 from flask import Flask
 from json import dumps
@@ -22,6 +22,14 @@ def interest_over_time(region, keyword):
     trends_json = dumps(trends_list, ensure_ascii=False)
 
     return trends_json
+
+
+@app.route('/related_searches/<string:region>/<string:keyword>', methods=['GET'])
+def related_searches(region, keyword):
+    relation_list = get_related_searches(region, keyword)
+    relation_json = dumps(relation_list, ensure_ascii=False)
+
+    return relation_json
 
 
 @app.route('/info/<string:keyword>', methods=['GET'])
