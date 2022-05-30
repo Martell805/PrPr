@@ -1,4 +1,4 @@
-# VERSION 1.3
+# VERSION 1.5
 
 from flask import Flask, request
 from json import dumps, loads
@@ -16,25 +16,25 @@ def trending_searches(region):
     return trends_json
 
 
-@app.route('/interest_over_time/<string:region>/<string:keyword>', methods=['GET'])
-def interest_over_time(region, keyword):
-    trends_list = get_interest_over_time(region, keyword)
+@app.route('/interest_over_time/<string:region>/<string:keyword>/<string:timeframe>', methods=['GET'])
+def interest_over_time(region, keyword, timeframe):
+    trends_list = get_interest_over_time(region, keyword, timeframe)
     trends_json = dumps(trends_list, ensure_ascii=False)
 
     return trends_json
 
 
-@app.route('/interest_over_time_multiple/<string:region>/', methods=['POST'])
-def interest_over_time_multiple(region):
-    trends_list = get_interest_over_time_multiple(region, loads(request.json))
+@app.route('/interest_over_time_multiple/<string:region>/<string:timeframe>', methods=['POST'])
+def interest_over_time_multiple(region, timeframe):
+    trends_list = get_interest_over_time_multiple(region, loads(request.json), timeframe)
     trends_json = dumps(trends_list, ensure_ascii=False)
 
     return trends_json
 
 
-@app.route('/related_searches/<string:region>/<string:keyword>', methods=['GET'])
-def related_searches(region, keyword):
-    relation_list = get_related_searches(region, keyword)
+@app.route('/related_searches/<string:region>/<string:keyword>/<string:timeframe>', methods=['GET'])
+def related_searches(region, keyword, timeframe):
+    relation_list = get_related_searches(region, keyword, timeframe)
     relation_json = dumps(relation_list, ensure_ascii=False)
 
     return relation_json
@@ -48,10 +48,10 @@ def info(keyword):
     return page_json
 
 
-@app.route('/full_info/<string:region>/<string:keyword>')
-def full_info(region, keyword):
+@app.route('/full_info/<string:region>/<string:keyword>/<string:timeframe>')
+def full_info(region, keyword, timeframe):
     full_dict = get_info(keyword)
-    full_dict["graph"] = get_interest_over_time(region, keyword)
+    full_dict["graph"] = get_interest_over_time(region, keyword, timeframe)
     full_json = dumps(full_dict, ensure_ascii=False)
 
     return full_json

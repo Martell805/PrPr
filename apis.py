@@ -42,12 +42,12 @@ def get_trending_searches(region):
     return trends_list
 
 
-def get_interest_over_time(region, keyword):
+def get_interest_over_time(region, keyword, timeframe):
     if region == "WR":
         region = ""
 
     interest_pytrends = TrendReq()
-    interest_pytrends.build_payload([keyword], geo=region, timeframe='today 3-m')
+    interest_pytrends.build_payload([keyword], geo=region, timeframe=timeframe)
     trends_dict = interest_pytrends.interest_over_time().to_dict(orient="split")
     trends_dict = [
         {
@@ -60,12 +60,12 @@ def get_interest_over_time(region, keyword):
     return trends_dict
 
 
-def get_interest_over_time_multiple(region, keywords):
+def get_interest_over_time_multiple(region, keywords, timeframe):
     if region == "WR":
         region = ""
 
     interest_pytrends = TrendReq()
-    interest_pytrends.build_payload(keywords, geo=region, timeframe='today 3-m')
+    interest_pytrends.build_payload(keywords, geo=region, timeframe=timeframe)
     trends_dict = interest_pytrends.interest_over_time().to_dict(orient="series")
 
     trends_dict = {
@@ -82,12 +82,12 @@ def get_interest_over_time_multiple(region, keywords):
     return trends_dict
 
 
-def get_related_searches(region, keyword):
+def get_related_searches(region, keyword, timeframe):
     if region == "WR":
         region = ""
 
     related_pytrends = TrendReq()
-    related_pytrends.build_payload([keyword], geo=region, timeframe='today 3-m')
+    related_pytrends.build_payload([keyword], geo=region, timeframe=timeframe)
 
     related_list = related_pytrends.related_topics()[keyword]["top"].to_dict(orient="records")
     related_list = [
