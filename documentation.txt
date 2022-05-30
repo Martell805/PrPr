@@ -1,7 +1,7 @@
-/trending_searches/<region> - возвращает список самых популярных запросов в указанной стране (например RU - Россия, WR - мир)
+GET /trending_searches/<region> - возвращает список самых популярных запросов в указанной стране (например RU - Россия, WR - мир)
 
 
-/interest_over_time/<region>/<keyword> - возвращает список словарей вида
+GET /interest_over_time/<region>/<keyword> - возвращает список словарей вида
 {
     "date": <дата: string>,
     "popularity": <популярность: int>
@@ -9,7 +9,17 @@
 запроса keyword в указанной стране (например RU - Россия, WR - мир)
 
 
-/related_searches/<region>/<keyword> - возвращает список словарей вида
+POST /interest_over_time_multiple/<region> (и ещё туда json со списком [<запрос: string>])- возвращает словарь списков словарей вида
+{
+    <запрос: string>: список словарей точек вида
+        {
+            "date": <дата: string>,
+            "popularity": <популярность: int>
+        }
+}
+
+
+GET /related_searches/<region>/<keyword> - возвращает список словарей вида
 {
     "keyword": <запрос: string>,
     "type": <тип запроса (что это одним словом): string>,
@@ -18,7 +28,7 @@
 запроса keyword в указанной стране (например RU - Россия, WR - мир)
 
 
-/info/<keyword> - возвращает словарь вида
+GET /info/<keyword> - возвращает словарь вида
 {
     "page_exists": <существование страницы: bool>,
     "short": <короткая информация о запросе: string>,
@@ -27,7 +37,7 @@
 "short" и "full" есть только если "page exists" - true
 
 
-/full_info/<region>/<keyword> - возвращает словарь вида
+GET /full_info/<region>/<keyword> - возвращает словарь вида
 {
     "page_exists": <существование страницы: bool>,
     "short": <короткая информация о запросе: string>,
@@ -39,3 +49,10 @@
         }>
 }
 "short" и "full" есть только если "page exists" - true
+
+
+GET /all_regions/ - возвращает список всех регионов вида
+{
+    "name": <название страны (в нижнем регистре с подчёркиваниями вместо пробелов): string>,
+    "code": <код страны из двух букв: string>
+}
